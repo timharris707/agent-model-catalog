@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "source": "https://platform.claude.com/docs/en/about-claude/models/overview.md",
+  "models": [
+    {"id":"claude-fable-5-1","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":"2.1.257"},
+    {"id":"claude-fable-5","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":null},
+    {"id":"claude-opus-5-5","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":"2.1.280"},
+    {"id":"claude-opus-5","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":"2.1.219"},
+    {"id":"claude-sonnet-5-5","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":"2.1.284"},
+    {"id":"claude-sonnet-5","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":null},
+    {"id":"claude-haiku-5-5","provider":"claude","efforts":["low","medium","high","xhigh","max"],"min_claude_code":"2.1.293"},
+    {"id":"gpt-6-astra","provider":"codex","efforts":["low","medium","high","xhigh","max","ultra"],"min_claude_code":null},
+    {"id":"gpt-6-sol","provider":"codex","efforts":["low","medium","high","xhigh","max","ultra"],"min_claude_code":null},
+    {"id":"gpt-6-luna","provider":"codex","efforts":["low","medium","high","xhigh","max"],"min_claude_code":null}
+  ]
+}

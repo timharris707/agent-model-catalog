@@ -1,0 +1,59 @@
+# Keeps catalog.json current from Anthropic's published model list.
+# Daily, and on demand from the Actions tab. Uses only the built-in
+# GITHUB_TOKEN; both sources it reads are public. A failed run (the overview
+# stopped parsing, a test broke) shows red here and emails the repo owner.
+name: update
+
+on:
+  schedule:
+    - cron: "17 14 * * *" # daily, 14:17 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test
+
+  update:
+    needs: test
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Read Anthropic's model list and add what is missing
+        id: update
+        run: node update.mjs
+      - name: Commit the change, if any
+        env:
+          SUMMARY: ${{ steps.update.outputs.summary }}
+        run: |
+          if git diff --quiet -- catalog.json; then
+            echo "catalog.json is current; nothing to commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog.json
+          git commit -m "Update catalog: $SUMMARY" -m "Made by the daily update job from Anthropic's published model list."
+          git push origin HEAD:main
