@@ -2,7 +2,7 @@
 
 The list of AI models a team chat's agent menus offer. Public on purpose: it holds model names, the effort levels each one takes, and the oldest Claude Code version that can run it. No secrets and nothing private.
 
-A daily job keeps `catalog.json` current from Anthropic's published model list. Chat servers read it every hour, keep their last good copy, and never drop a model they already list, so a new model reaches every installation without a code change or a deploy.
+A daily job keeps `catalog.json` current from Anthropic's published model list. Chat servers read it every hour and keep their last good copy, so a new model reaches every installation without a code change or a deploy. A server's own built-in models always keep their own settings: this file can only add models. A model the file added stays on a server while the file lists it or someone has pinned it.
 
 ## The file
 
@@ -15,7 +15,7 @@ A daily job keeps `catalog.json` current from Anthropic's published model list. 
 | `efforts` | The effort levels the model's own CLI takes, in order. Every model takes `medium`. |
 | `min_claude_code` | The oldest Claude Code that can run the model, or `null` when none is known. A launcher older than this uses its default model instead. |
 
-Readers drop any entry that breaks these rules, and ignore a document whose `schema` is not 1 or that lists more than 200 models, so a breaking format change needs a new schema number. The update job checks every rule before it writes.
+Readers drop any entry that breaks these rules, ignore a `min_claude_code` of 3.0.0 or above, take at most 200 added models in file order, and ignore a document whose `schema` is not 1, so a breaking format change needs a new schema number. The update job checks every rule before it writes, and never writes more than 200 models.
 
 ## How it updates
 
